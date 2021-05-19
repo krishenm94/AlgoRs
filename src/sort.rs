@@ -1,16 +1,15 @@
-pub fn insertion(input: &mut Vec<T>){
+pub fn insertion<T>(input: &mut Vec<T>){
 
 }
 
-pub fn selection(input: &mut Vec<T>){
+pub fn selection<T>(input: &mut Vec<T>){
 
 }
 
-pub fn bubble(input: &mut Vec<T>){
+pub fn bubble<T>(input: &mut Vec<T>){
 
 }
 
-pub fn merge(input: &mut Vec<T>){
+pub fn merge<T>(input: &mut Vec<T>){
 
 }
-
