@@ -1,5 +1,5 @@
 [package]
-name = "AlgoZoo"
+name = "algo_zoo"
 version = "0.1.0"
 authors = ["krishen <krishenm@gmail.com>"]
 edition = "2018"
