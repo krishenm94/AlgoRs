@@ -1,3 +1,4 @@
+
 pub fn insertion<T>(input: &mut Vec<T>)
 where
     T: Ord,
@@ -35,3 +36,19 @@ where
 pub fn bubble<T>(input: &mut Vec<T>) {}
 
 pub fn merge<T>(input: &mut Vec<T>) {}
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+    use assert::equal;
+    
+    static input_vec: Vec<i32> = vec![89, 3, 5, 34, 8, 1, 13, 21, 55, 2, 1];
+    static output_vec: Vec<i32> = vec![1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89];
+
+    #[test]
+    fn test_selection(){
+        let mut input: Vec<i32> = input_vec.clone();
+        selection(&mut input);
+        assert::equal(input, output_vec.clone());
+    }
+}
