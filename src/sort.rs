@@ -4,7 +4,11 @@ where
 {
     for i in 0..input.len() {
         for j in (0..i).rev() {
-            if input[i] <= input[j] {}
+            if input[j] >= input[j + 1] {
+                input.swap(j, j+1)
+            }else{
+                break;
+            }
         }
     }
 }

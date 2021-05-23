@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 assert = "0.2.1"
 lazy_static = "1.1.1"
+quickcheck = "1.0.3"
