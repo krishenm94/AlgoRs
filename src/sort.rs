@@ -36,9 +36,34 @@ where
     input.append(&mut output);
 }
 
-pub fn bubble<T>(input: &mut Vec<T>) {}
+pub fn bubble<T>(input: &mut Vec<T>)
+where
+    T: Ord,
+{
+    if input.len() < 2 {
+        return;
+    }
 
-pub fn merge<T>(input: &mut Vec<T>) {}
+    loop {
+        let mut swap_count: usize = 0;
+        for i in 1..input.len() {
+            if input[i] < input[i - 1] {
+                input.swap(i, i - 1);
+                swap_count = swap_count + 1;
+            }
+        }
+
+        if swap_count == 0 {
+            break;
+        }
+    }
+}
+
+pub fn merge<T>(input: &mut Vec<T>)
+where
+    T: Ord,
+{
+}
 
 #[cfg(test)]
 mod tests {
@@ -61,6 +86,12 @@ mod tests {
     fn test_insertion() {
         let mut input: Vec<i32> = INPUT.clone();
         insertion(&mut input);
+        assert::equal(input, OUTPUT.clone());
+    }
+    #[test]
+    fn test_bubble() {
+        let mut input: Vec<i32> = INPUT.clone();
+        bubble(&mut input);
         assert::equal(input, OUTPUT.clone());
     }
 }
