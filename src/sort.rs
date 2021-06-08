@@ -5,8 +5,8 @@ where
     for i in 0..input.len() {
         for j in (0..i).rev() {
             if input[j] >= input[j + 1] {
-                input.swap(j, j+1)
-            }else{
+                input.swap(j, j + 1)
+            } else {
                 break;
             }
         }
@@ -54,6 +54,13 @@ mod tests {
     fn test_selection() {
         let mut input: Vec<i32> = INPUT.clone();
         selection(&mut input);
+        assert::equal(input, OUTPUT.clone());
+    }
+
+    #[test]
+    fn test_insertion() {
+        let mut input: Vec<i32> = INPUT.clone();
+        insertion(&mut input);
         assert::equal(input, OUTPUT.clone());
     }
 }
