@@ -114,7 +114,7 @@ where
 }
 
 // Identify the second largest number in the array
-// with the at most n + n * log(n) - 2
+// with at most n + log(n) - 2 comparisons
 pub fn second_largest<T>(input: &Vec<T>) -> T
 where
     T: Ord + Copy + Debug,
