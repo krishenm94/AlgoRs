@@ -25,7 +25,6 @@ pub fn mult(x: i64, y: i64) -> i64 {
     let c = y / (i64::pow(10, mag_y / 2));
     let d = y - (c * (i64::pow(10, mag_y / 2)));
 
-    println!("{}", (10 ^ (mag_y / 2)));
     println!("a, b, c, d: {}, {}, {}, {}", a, b, c, d);
 
     let p = a + b;
