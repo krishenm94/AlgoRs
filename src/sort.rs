@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 pub fn insertion<T>(input: &mut Vec<T>)
 where
     T: Ord,
@@ -59,8 +61,6 @@ where
     }
 }
 
-use std::fmt::Debug;
-
 pub fn merge<T>(input: &mut Vec<T>)
 where
     T: Ord + Copy + Debug,
@@ -113,6 +113,48 @@ where
     input.append(&mut output);
 }
 
+// Identify the second largest number in the array
+// with the at most n + n * log(n) - 2
+pub fn second_largest<T>(input: &Vec<T>) -> T
+where
+    T: Ord + Copy + Debug,
+{
+    pub fn second_largest_<T>(input1: Vec<T>, input2: Vec<T>) -> T
+    where
+        T: Ord + Copy,
+    {
+        if input1.is_empty() {
+            assert!(input2.len() == 1);
+            return input2[0];
+        }
+
+        if input2.is_empty() {
+            assert!(input1.len() == 1);
+            return input1[0];
+        }
+
+        let max_1 = input1.iter().max();
+        let max_2 = input2.iter().max();
+        if max_1 > max_2 {
+            return *max_2.unwrap();
+        } else {
+            return *max_1.unwrap();
+        };
+    }
+
+    assert!(!input.is_empty());
+
+    if input.len() < 2 {
+        return input[0];
+    }
+
+    let half1 = (&input[0..input.len() / 2]).to_vec();
+    let half2 = (&input[input.len() / 2..input.len()]).to_vec();
+    second_largest(&half1);
+    second_largest(&half2);
+    return second_largest_(half1, half2);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -149,5 +191,12 @@ mod tests {
         let mut input: Vec<i32> = INPUT.clone();
         merge(&mut input);
         assert::equal(input, OUTPUT.clone());
+    }
+
+    #[test]
+    fn test_second_largest() {
+        let input: Vec<i32> = INPUT.clone();
+        let output = second_largest(&input);
+        assert::equal(output, OUTPUT[OUTPUT.len() - 2]);
     }
 }
