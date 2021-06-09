@@ -61,8 +61,40 @@ where
 
 pub fn merge<T>(input: &mut Vec<T>)
 where
-    T: Ord,
+    T: Ord + Copy,
 {
+    pub fn merge_<T>(input1: Vec<T>, input2: Vec<T>) -> Vec<T>
+    where
+        T: Ord + Copy,
+    {
+        let mut i: usize = 0;
+        let mut j: usize = 0;
+        let mut output: vec![T, input1.len() + input2.len()];
+        for k in 0..input1.len() + input2.len() - 2 {
+            if input1[i] < input2[j] {
+                output[k] = input1[i];
+                i = i + 1;
+            } else {
+                output[k] = input2[j];
+                j = j + 1;
+            }
+        }
+
+        return output;
+    }
+
+    if input.len() < 2 {
+        return;
+    }
+
+    let mut half1 = (&input[0..input.len() / 2 - 1]).to_vec();
+    let mut half2 = (&input[input.len() / 2..input.len() - 1]).to_vec();
+
+    merge(&mut half1);
+    merge(&mut half2);
+    let mut output = merge_(half1, half2);
+
+    input = &mut output;
 }
 
 #[cfg(test)]
@@ -88,6 +120,7 @@ mod tests {
         insertion(&mut input);
         assert::equal(input, OUTPUT.clone());
     }
+
     #[test]
     fn test_bubble() {
         let mut input: Vec<i32> = INPUT.clone();
