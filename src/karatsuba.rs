@@ -9,23 +9,23 @@ pub fn get_magnitude(x: i64) -> u32 {
     return mag;
 }
 
+// TODO: Deal with overflow
 pub fn mult(x: i64, y: i64) -> i64 {
     if x == 0 || y == 0 {
         return 0;
     }
     let mag_x = get_magnitude(x);
     let mag_y = get_magnitude(y);
-    println!("Value & Mag x, y: {}, {}, {}, {}", x, mag_x, y, mag_y);
-    if mag_x < 2 && mag_y < 2 {
+    let mag = std::cmp::max(mag_x, mag_y);
+
+    if mag < 2 {
         return x * y;
     }
 
-    let a = x / (i64::pow(10, mag_x / 2));
-    let b = x - (a * (i64::pow(10, mag_x / 2)));
-    let c = y / (i64::pow(10, mag_y / 2));
-    let d = y - (c * (i64::pow(10, mag_y / 2)));
-
-    println!("a, b, c, d: {}, {}, {}, {}", a, b, c, d);
+    let a = x / (i64::pow(10, mag / 2));
+    let b = x - (a * (i64::pow(10, mag / 2)));
+    let c = y / (i64::pow(10, mag / 2));
+    let d = y - (c * (i64::pow(10, mag / 2)));
 
     let p = a + b;
     let q = c + d;
@@ -34,9 +34,9 @@ pub fn mult(x: i64, y: i64) -> i64 {
     let pq = mult(p, q);
     let adbc = pq - ac - bd;
 
-    // TBC
-    // shortcut: mag_x is used
-    return (i64::pow(10, mag_x)) * ac + (i64::pow(10, mag_x / 2)) * adbc + bd;
+    let power_ac = if mag % 2 == 0 { mag } else { mag - 1 };
+    let power_adbc = mag / 2;
+    return (i64::pow(10, power_ac)) * ac + (i64::pow(10, power_adbc)) * adbc + bd;
 }
 
 #[cfg(test)]
@@ -52,9 +52,9 @@ mod tests {
 
     #[test]
     fn test_mult() {
-        let x: i64 = 12;
-        let y: i64 = 13;
+        let x: i64 = 854678;
+        let y: i64 = 234455;
         let output = mult(x, y);
-        assert::equal(output, 156);
+        assert::equal(output, x * y);
     }
 }
