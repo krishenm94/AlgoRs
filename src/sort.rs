@@ -81,16 +81,10 @@ where
         let mut j: usize = 0;
         let mut output: Vec<T> = Vec::new();
         while i + j < input1.len() + input2.len() {
-            if i == input1.len() {
-                output.push(input2[j]);
-                j = j + 1;
-            } else if j == input2.len() {
+            if i < input1.len() && (j == input2.len() || input1[i] < input2[j]) {
                 output.push(input1[i]);
                 i = i + 1;
-            } else if input1[i] < input2[j] {
-                output.push(input1[i]);
-                i = i + 1;
-            } else {
+            } else if j < input2.len() {
                 output.push(input2[j]);
                 j = j + 1;
             }
