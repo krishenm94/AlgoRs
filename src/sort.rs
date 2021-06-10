@@ -189,13 +189,13 @@ where
 
     let mut half1 = (&input[0..input.len() / 2]).to_vec();
     let mut half2 = (&input[input.len() / 2..input.len()]).to_vec();
-    merge(&mut half1);
-    merge(&mut half2);
+    let half1_inversions = count_inversions(&mut half1);
+    let half2_inversions = count_inversions(&mut half2);
     let (inversions, mut output) = merge_count_inv(half1, half2);
 
     input.clear();
     input.append(&mut output);
-    return inversions;
+    return inversions + half1_inversions + half2_inversions;
 }
 #[cfg(test)]
 mod tests {
