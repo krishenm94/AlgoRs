@@ -197,6 +197,7 @@ where
     input.append(&mut output);
     return inversions + half1_inversions + half2_inversions;
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -240,5 +241,14 @@ mod tests {
         let input: Vec<i32> = INPUT.clone();
         let output = second_largest(&input);
         assert::equal(output, OUTPUT[OUTPUT.len() - 2]);
+    }
+
+    #[test]
+    fn test_count_inversions() {
+        let mut input: Vec<i32> = vec![6, 5, 4, 3, 2, 1];
+        let mut target: Vec<i32> = vec![1, 2, 3, 4, 5, 6];
+        let output = count_inversions(&mut input);
+        assert::equal(output, 15);
+        assert::equal(target, input);
     }
 }
