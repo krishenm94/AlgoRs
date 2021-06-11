@@ -1,5 +1,6 @@
 mod karatsuba;
 mod sort;
+mod strassen;
 
 fn main() {
     println!("Hello world!");
