@@ -247,22 +247,11 @@ where
 
 pub fn closest_pair_1d_v2<T>(input: &mut Vec<T>) -> (T, T)
 where
-    T: Ord
-        + Copy
-        + Debug
-        + num_traits::Num
-        + num_traits::Signed
-        + num_traits::Bounded
-        + num_traits::Zero,
+    T: Ord + Copy + Debug + num_traits::Num + num_traits::Bounded,
 {
     fn merge_find_pair<T>(input1: Vec<T>, input2: Vec<T>, diff: T) -> (Option<(T, T)>, Vec<T>)
     where
-        T: Ord
-            + Copy
-            + num_traits::Num
-            + num_traits::Signed
-            + num_traits::Bounded
-            + num_traits::Zero,
+        T: Ord + Copy + num_traits::Num,
     {
         let mut i: usize = 0;
         let mut j: usize = 0;
