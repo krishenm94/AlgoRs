@@ -304,16 +304,25 @@ where
 
     let pair1 = closest_pair_1d_v2(&mut half1);
     let pair2 = closest_pair_1d_v2(&mut half2);
-    let diff1 = abs(pair1.1 - pair1.0).ok().unwrap();
-    let diff2 = abs(pair2.1 - pair2.0).ok().unwrap();
+    let diff1 = pair1.1 - pair1.0;
+    let diff2 = pair2.1 - pair2.0;
     let diff = std::cmp::min(diff1, diff2);
 
     let (pair, mut output) = merge_find_pair(half1, half2, diff);
 
-    // TODO: Compare pair1, pair2 & pair
+    let mut temp_pair = if diff1 < diff2 { pair1 } else { pair2 };
+    if !pair.is_none() {
+        let split_diff = pair.unwrap().1 - pair.unwrap().0;
+        temp_pair = if split_diff < diff {
+            pair.unwrap()
+        } else {
+            temp_pair
+        };
+    }
+
     input.clear();
     input.append(&mut output);
-    return pair.unwrap();
+    return temp_pair;
 }
 
 #[cfg(test)]
