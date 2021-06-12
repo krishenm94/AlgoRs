@@ -198,6 +198,78 @@ where
     return inversions + half1_inversions + half2_inversions;
 }
 
+pub fn closest_pair<T>(input: &Vec<T>) -> (usize, Option<T>)
+where
+    T: Ord + Copy + num_traits::Num,
+{
+    pub fn merge_closest_pair<T>(input1: Vec<T>, input2: Vec<T>) -> (usize, Option<T>)
+    where
+        T: Ord + Copy + num_traits::Num,
+    {
+        if input1.is_empty() {
+            return (0, None);
+        }
+
+        if input2.is_empty() {
+            return (0, None);
+        }
+
+        let mut i: usize = 0;
+        let mut j: usize = 0;
+        let mut index: usize = 0;
+        let mut diff: Option<T> = None;
+        let mut output: Vec<T> = Vec::new();
+
+        if i < input1.len() && (j == input2.len() || input1[i] < input2[j]) {
+            output.push(input1[i]);
+            i = i + 1;
+        } else if j < input2.len() {
+            output.push(input2[j]);
+            j = j + 1;
+        }
+        while i + j < input1.len() + input2.len() {
+            if i < input1.len() && (j == input2.len() || input1[i] < input2[j]) {
+                output.push(input1[i]);
+                i = i + 1;
+            } else if j < input2.len() {
+                output.push(input2[j]);
+                j = j + 1;
+            }
+
+            if !diff.is_none()
+                && output.len() > 1
+                && diff.unwrap() > output[i + j - 1] - output[i + j - 2]
+            {
+                index = i + j - 1;
+                diff = Some(output[i + j - 1] - output[i + j - 2]);
+            }
+        }
+
+        return (index, diff);
+    }
+
+    if input.len() < 2 {
+        return (0, None);
+    }
+
+    let mut half1 = (&input[0..input.len() / 2]).to_vec();
+    let mut half2 = (&input[input.len() / 2..input.len()]).to_vec();
+    let (index1, diff1) = closest_pair(&mut half1);
+    let (mut index2, diff2) = closest_pair(&mut half2);
+    index2 = index2 + input.len() / 2;
+    let (mut index, mut diff) = merge_closest_pair(half1, half2);
+
+    if diff.is_none() || !diff1.is_none() && diff.unwrap() > diff1.unwrap() {
+        diff = diff1;
+        index = index1;
+    }
+    if diff.is_none() || !diff2.is_none() && diff.unwrap() > diff2.unwrap() {
+        diff = diff2;
+        index = index2;
+    }
+    return (index, diff);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -246,9 +318,17 @@ mod tests {
     #[test]
     fn test_count_inversions() {
         let mut input: Vec<i32> = vec![6, 5, 4, 3, 2, 1];
-        let mut target: Vec<i32> = vec![1, 2, 3, 4, 5, 6];
+        let target: Vec<i32> = vec![1, 2, 3, 4, 5, 6];
         let output = count_inversions(&mut input);
         assert::equal(output, 15);
         assert::equal(target, input);
+    }
+    #[test]
+    fn test_closest_pair() {
+        let input: Vec<i32> = INPUT.clone();
+        let (index, diff) = closest_pair(&input);
+        assert!(!diff.is_none());
+        assert::equal(diff.unwrap(), 0);
+        assert::equal(index, 1);
     }
 }
