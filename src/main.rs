@@ -1,4 +1,5 @@
 mod karatsuba;
+mod power;
 mod sort;
 mod strassen;
 
