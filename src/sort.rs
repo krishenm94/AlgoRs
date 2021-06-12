@@ -65,7 +65,7 @@ pub fn merge<T>(input: &mut Vec<T>)
 where
     T: Ord + Copy + Debug,
 {
-    pub fn merge_<T>(input1: Vec<T>, input2: Vec<T>) -> Vec<T>
+    fn merge_sort<T>(input1: Vec<T>, input2: Vec<T>) -> Vec<T>
     where
         T: Ord + Copy,
     {
@@ -101,7 +101,7 @@ where
     let mut half2 = (&input[input.len() / 2..input.len()]).to_vec();
     merge(&mut half1);
     merge(&mut half2);
-    let mut output = merge_(half1, half2);
+    let mut output = merge_sort(half1, half2);
 
     input.clear();
     input.append(&mut output);
@@ -113,7 +113,7 @@ pub fn second_largest<T>(input: &Vec<T>) -> T
 where
     T: Ord + Copy + Debug,
 {
-    pub fn second_largest_<T>(input1: Vec<T>, input2: Vec<T>) -> T
+    fn merge_second_largest<T>(input1: Vec<T>, input2: Vec<T>) -> T
     where
         T: Ord + Copy,
     {
@@ -146,7 +146,7 @@ where
     let half2 = (&input[input.len() / 2..input.len()]).to_vec();
     second_largest(&half1);
     second_largest(&half2);
-    return second_largest_(half1, half2);
+    return merge_second_largest(half1, half2);
 }
 
 pub fn count_inversions<T>(input: &mut Vec<T>) -> usize
@@ -198,74 +198,29 @@ where
     return inversions + half1_inversions + half2_inversions;
 }
 
-pub fn closest_pair<T>(input: &Vec<T>) -> (usize, Option<T>)
+pub fn closest_pair<T>(input: &mut Vec<T>) -> (usize, Option<T>)
 where
-    T: Ord + Copy + num_traits::Num,
+    T: Ord + Copy + Debug + num_traits::Num,
 {
-    pub fn merge_closest_pair<T>(input1: Vec<T>, input2: Vec<T>) -> (usize, Option<T>)
-    where
-        T: Ord + Copy + num_traits::Num,
-    {
-        if input1.is_empty() {
-            return (0, None);
-        }
-
-        if input2.is_empty() {
-            return (0, None);
-        }
-
-        let mut i: usize = 0;
-        let mut j: usize = 0;
-        let mut index: usize = 0;
-        let mut diff: Option<T> = None;
-        let mut output: Vec<T> = Vec::new();
-
-        if i < input1.len() && (j == input2.len() || input1[i] < input2[j]) {
-            output.push(input1[i]);
-            i = i + 1;
-        } else if j < input2.len() {
-            output.push(input2[j]);
-            j = j + 1;
-        }
-        while i + j < input1.len() + input2.len() {
-            if i < input1.len() && (j == input2.len() || input1[i] < input2[j]) {
-                output.push(input1[i]);
-                i = i + 1;
-            } else if j < input2.len() {
-                output.push(input2[j]);
-                j = j + 1;
-            }
-
-            if !diff.is_none()
-                && output.len() > 1
-                && diff.unwrap() > output[i + j - 1] - output[i + j - 2]
-            {
-                index = i + j - 1;
-                diff = Some(output[i + j - 1] - output[i + j - 2]);
-            }
-        }
-
-        return (index, diff);
-    }
-
     if input.len() < 2 {
         return (0, None);
     }
 
-    let mut half1 = (&input[0..input.len() / 2]).to_vec();
-    let mut half2 = (&input[input.len() / 2..input.len()]).to_vec();
-    let (index1, diff1) = closest_pair(&mut half1);
-    let (mut index2, diff2) = closest_pair(&mut half2);
-    index2 = index2 + input.len() / 2;
-    let (mut index, mut diff) = merge_closest_pair(half1, half2);
+    let mut input_clone = input.clone();
+    merge(&mut input_clone);
 
-    if diff.is_none() || !diff1.is_none() && diff.unwrap() > diff1.unwrap() {
-        diff = diff1;
-        index = index1;
-    }
-    if diff.is_none() || !diff2.is_none() && diff.unwrap() > diff2.unwrap() {
-        diff = diff2;
-        index = index2;
+    input.clear();
+    input.append(&mut input_clone);
+
+    let mut index: usize = 0;
+    let mut diff: Option<T> = None;
+    for i in 1..input.len() {
+        if !diff.is_none() && input[i] - input[i - 0] >= diff.unwrap() {
+            continue;
+        }
+
+        diff = Some(input[i] - input[i - 0]);
+        index = i;
     }
     return (index, diff);
 }
@@ -325,8 +280,8 @@ mod tests {
     }
     #[test]
     fn test_closest_pair() {
-        let input: Vec<i32> = INPUT.clone();
-        let (index, diff) = closest_pair(&input);
+        let mut input: Vec<i32> = INPUT.clone();
+        let (index, diff) = closest_pair(&mut input);
         assert!(!diff.is_none());
         assert::equal(diff.unwrap(), 0);
         assert::equal(index, 1);
