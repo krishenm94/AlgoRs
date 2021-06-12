@@ -266,11 +266,11 @@ where
             } else if j < input2.len() {
                 output.push(input2[j]);
                 j = j + 1;
-            }
 
-            if i + j > 1 && diff_copy > output[i + j - 1] - output[i + j - 2] {
-                diff_copy = output[i + j - 1] - output[i + j - 2];
-                pair = Some((output[i + j - 2], output[i + j - 1]));
+                if i + j > 1 && diff_copy > output[i + j - 1] - output[i + j - 2] {
+                    diff_copy = output[i + j - 1] - output[i + j - 2];
+                    pair = Some((output[i + j - 2], output[i + j - 1]));
+                }
             }
         }
 
@@ -320,6 +320,17 @@ where
     input.clear();
     input.append(&mut output);
     return temp_pair;
+}
+
+// TODO: TBC
+pub fn closest_pair_2d<T>(input: Vec<(T, T)>) -> Option<((T, T), (T, T))>
+where
+    T: Ord + Copy + Debug + num_traits::Num + num_traits::Bounded,
+{
+    return Some((
+        (T::max_value(), T::max_value()),
+        (T::max_value(), T::max_value()),
+    ));
 }
 
 #[cfg(test)]
@@ -393,5 +404,14 @@ mod tests {
         assert!(!pair.is_none());
         assert::equal(pair.unwrap().0, OUTPUT[0]);
         assert::equal(pair.unwrap().1, OUTPUT[1]);
+    }
+
+    #[test]
+    fn test_closest_pair_2d() {
+        let input: Vec<(i32, i32)> = vec![(-2, 4), (3, 2), (5, 6), (0, 9), (6, -4)];
+        let pair = closest_pair_2d(input);
+        assert!(!pair.is_none());
+        assert::equal(pair.unwrap().0, (3, 2));
+        assert::equal(pair.unwrap().1, (5, 6));
     }
 }
