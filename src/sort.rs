@@ -245,7 +245,7 @@ where
     }
 }
 
-pub fn closest_pair_1d_v2<T>(input: &mut Vec<T>) -> (T, T)
+pub fn closest_pair_1d_v2<T>(input: &mut Vec<T>) -> Option<(T, T)>
 where
     T: Ord + Copy + Debug + num_traits::Num + num_traits::Bounded,
 {
@@ -277,36 +277,44 @@ where
         return (pair, output);
     }
 
-    assert!(input.len() > 1);
-
     let mut half1 = (&input[0..input.len() / 2]).to_vec();
     let mut half2 = (&input[input.len() / 2..input.len()]).to_vec();
 
-    if input.len() <= 3 {
-        let (pair, mut output) = merge_find_pair(half1, half2, T::max_value());
-        input.clear();
-        input.append(&mut output);
-        assert!(!pair.is_none());
-
-        return pair.unwrap();
+    if input.len() <= 1 {
+        return None;
     }
 
     let pair1 = closest_pair_1d_v2(&mut half1);
     let pair2 = closest_pair_1d_v2(&mut half2);
-    let diff1 = pair1.1 - pair1.0;
-    let diff2 = pair2.1 - pair2.0;
-    let diff = std::cmp::min(diff1, diff2);
+    let diff1 = if pair1.is_none() {
+        None
+    } else {
+        Some(pair1.unwrap().1 - pair1.unwrap().0)
+    };
+    let diff2 = if pair2.is_none() {
+        None
+    } else {
+        Some(pair2.unwrap().1 - pair2.unwrap().0)
+    };
+    let diff = if diff1.is_none() || diff2.is_none() {
+        T::max_value()
+    } else {
+        std::cmp::min(diff1.unwrap(), diff2.unwrap())
+    };
 
     let (pair, mut output) = merge_find_pair(half1, half2, diff);
 
-    let mut temp_pair = if diff1 < diff2 { pair1 } else { pair2 };
+    let mut temp_pair = if diff1.is_none() && diff2.is_none() {
+        None
+    } else if diff2.is_none() {
+        pair1
+    } else {
+        pair2
+    };
+
     if !pair.is_none() {
         let split_diff = pair.unwrap().1 - pair.unwrap().0;
-        temp_pair = if split_diff < diff {
-            pair.unwrap()
-        } else {
-            temp_pair
-        };
+        temp_pair = if split_diff < diff { pair } else { temp_pair };
     }
 
     input.clear();
@@ -376,12 +384,14 @@ mod tests {
         assert::equal(pair.1, OUTPUT[1]);
         assert::equal(input, OUTPUT.clone())
     }
+
     #[test]
     fn test_closest_pair_1d_v2() {
         let mut input: Vec<i32> = INPUT.clone();
         let pair = closest_pair_1d_v2(&mut input);
-        assert::equal(pair.0, OUTPUT[0]);
-        assert::equal(pair.1, OUTPUT[1]);
-        assert::equal(input, OUTPUT.clone())
+        assert::equal(input, OUTPUT.clone());
+        assert!(!pair.is_none());
+        assert::equal(pair.unwrap().0, OUTPUT[0]);
+        assert::equal(pair.unwrap().1, OUTPUT[1]);
     }
 }
