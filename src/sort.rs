@@ -198,7 +198,7 @@ where
     return inversions + half1_inversions + half2_inversions;
 }
 
-pub fn closest_pair<T>(input: &mut Vec<T>) -> (usize, Option<T>)
+pub fn closest_pair_1d<T>(input: &mut Vec<T>) -> (usize, Option<T>)
 where
     T: Ord + Copy + Debug + num_traits::Num,
 {
@@ -279,9 +279,9 @@ mod tests {
         assert::equal(target, input);
     }
     #[test]
-    fn test_closest_pair() {
+    fn test_closest_pair_1d() {
         let mut input: Vec<i32> = INPUT.clone();
-        let (index, diff) = closest_pair(&mut input);
+        let (index, diff) = closest_pair_1d(&mut input);
         assert!(!diff.is_none());
         assert::equal(diff.unwrap(), 0);
         assert::equal(index, 1);
