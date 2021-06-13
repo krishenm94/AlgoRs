@@ -245,6 +245,7 @@ where
     }
 }
 
+#[allow(dead_code)]
 pub fn closest_pair_1d_v2<T>(input: &mut Vec<T>) -> Option<(T, T)>
 where
     T: Ord + Copy + Debug + num_traits::Num + num_traits::Bounded,

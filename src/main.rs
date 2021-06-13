@@ -1,19 +1,22 @@
+mod arithmetic;
 mod karatsuba;
-mod power;
 mod sort;
 mod strassen;
 
 use std::{
     fs::File,
-    io::{prelude::*, BufReader, Error, ErrorKind, Read},
+    io::{prelude::*, BufReader, Error, ErrorKind},
 };
 
 fn read_to_ints(filename: &str) -> Result<Vec<i64>, Error> {
     let file = File::open(filename).expect("File not found!");
     let buf = BufReader::new(file);
-    buf.lines()
+    let result = buf
+        .lines()
         .map(|l| l.and_then(|v| v.parse().map_err(|e| Error::new(ErrorKind::InvalidData, e))))
-        .collect()
+        .collect();
+
+    return result;
 }
 
 fn main() {
