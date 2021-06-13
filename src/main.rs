@@ -1,5 +1,6 @@
 mod arithmetic;
 mod karatsuba;
+mod search;
 mod sort;
 mod strassen;
 
