@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub fn binary_exponentiation(base: usize, power: usize) -> usize {
     if power == 0 {
         return 1;

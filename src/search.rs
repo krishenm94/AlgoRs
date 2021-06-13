@@ -2,6 +2,7 @@ use std::{option::Option, vec::Vec};
 
 // Find maximum of a unimodal vector;
 // a vector with elements ascending till a peak and then decreasing.
+#[allow(dead_code)]
 pub fn unimodal_maximum<T>(input: &Vec<T>, start: usize, end: usize) -> T
 where
     T: Ord + Copy,
@@ -16,6 +17,7 @@ where
     }
 }
 
+#[allow(dead_code)]
 pub fn element_equals_index(input: &Vec<i32>, start: usize, end: usize) -> Option<usize> {
     let index: usize = (end + start) / 2;
     if input[index] == index as i32 {

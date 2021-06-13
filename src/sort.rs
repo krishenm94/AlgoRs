@@ -1,6 +1,7 @@
 use std::fmt::*;
 use std::result::Result;
 
+#[allow(dead_code)]
 pub fn insertion<T>(input: &mut Vec<T>)
 where
     T: Ord,
@@ -16,6 +17,7 @@ where
     }
 }
 
+#[allow(dead_code)]
 pub fn selection<T>(input: &mut Vec<T>)
 where
     T: Ord + Copy,
@@ -39,6 +41,7 @@ where
     input.append(&mut output);
 }
 
+#[allow(dead_code)]
 pub fn bubble<T>(input: &mut Vec<T>)
 where
     T: Ord,
@@ -62,6 +65,7 @@ where
     }
 }
 
+#[allow(dead_code)]
 pub fn merge<T>(input: &mut Vec<T>)
 where
     T: Ord + Copy + Debug,
@@ -110,6 +114,7 @@ where
 
 // Identify the second largest number in the array
 // with at most n + log(n) - 2 comparisons
+#[allow(dead_code)]
 pub fn second_largest<T>(input: &Vec<T>) -> T
 where
     T: Ord + Copy + Debug,
@@ -150,6 +155,7 @@ where
     return merge_second_largest(half1, half2);
 }
 
+#[allow(dead_code)]
 pub fn count_inversions<T>(input: &mut Vec<T>) -> usize
 where
     T: Ord + Copy + Debug,
@@ -199,6 +205,7 @@ where
     return inversions + half1_inversions + half2_inversions;
 }
 
+#[allow(dead_code)]
 pub fn closest_pair_1d<T>(input: &mut Vec<T>) -> (T, T)
 where
     T: Ord + Copy + Debug + num_traits::Num,
@@ -228,6 +235,7 @@ where
     return (input[index], input[index - 1]);
 }
 
+#[allow(dead_code)]
 pub fn abs<T>(val: T) -> Result<T, String>
 where
     T: Ord
@@ -324,6 +332,7 @@ where
 }
 
 // TODO: TBC
+#[allow(dead_code)]
 pub fn closest_pair_2d<T>(input: Vec<(T, T)>) -> Option<((T, T), (T, T))>
 where
     T: Ord + Copy + Debug + num_traits::Num + num_traits::Bounded,

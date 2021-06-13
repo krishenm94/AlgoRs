@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub fn get_magnitude(x: i64) -> u32 {
     let mut mag: u32 = 0;
     let mut val = x;
@@ -10,6 +11,7 @@ pub fn get_magnitude(x: i64) -> u32 {
 }
 
 // TODO: Deal with overflow
+#[allow(dead_code)]
 pub fn mult(x: i64, y: i64) -> i64 {
     if x == 0 || y == 0 {
         return 0;
