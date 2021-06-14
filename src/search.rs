@@ -81,23 +81,23 @@ pub fn local_min_2d_grid(
         (None, current_candidate_pos)
     }
 
-    fn check__row(
+    fn check_row(
         input: &Matrix2<i32>,
-        _row: usize,
+        row: usize,
         start_col: usize,
         end_col: usize,
         candidate: i32,
     ) -> (Option<(usize, usize)>, Option<(usize, usize)>) {
         let mut current_candidate_pos: Option<(usize, usize)> = None;
         for i in start_col..end_col {
-            let success = is_local_min(input, i, _row);
+            let success = is_local_min(input, i, row);
 
             if success {
-                return (Some((_row, i)), None);
+                return (Some((row, i)), None);
             }
 
-            if *input.get(i + _row * input.ncols()).unwrap() < candidate {
-                current_candidate_pos = Some((_row, i));
+            if *input.get(i + row * input.ncols()).unwrap() < candidate {
+                current_candidate_pos = Some((row, i));
             }
         }
 
@@ -112,17 +112,17 @@ pub fn local_min_2d_grid(
         if candidate.1.is_none() {
             return ((0, input.ncols() - 1), (0, input.nrows() - 1));
         } else {
-            let _row_offset = input.nrows() / depth + 1 / 2;
+            let row_offset = input.nrows() / depth + 1 / 2;
             let col_offset = input.ncols() / depth + 1 / 2;
             let col = candidate.1.unwrap().0;
-            let _row = candidate.1.unwrap().1;
+            let row = candidate.1.unwrap().1;
             let start = (
                 std::cmp::max(0, col - col_offset),
-                std::cmp::max(0, _row - _row_offset),
+                std::cmp::max(0, row - row_offset),
             );
             let end = (
                 std::cmp::min(input.ncols(), col + col_offset),
-                std::cmp::min(input.nrows(), _row + _row_offset),
+                std::cmp::min(input.nrows(), row + row_offset),
             );
             return (start, end);
         }
@@ -141,16 +141,15 @@ pub fn local_min_2d_grid(
             .unwrap();
         candidate_copy = (*candidate_value, col_output.1);
     }
-    let _row_output = check__row(&input, (start.1 + end.1) / 2, start.0, end.1, candidate.0);
-
-    if !_row_output.0.is_none() {
-        return _row_output.0.unwrap();
+    let row_output = check_row(&input, (start.1 + end.1) / 2, start.0, end.1, candidate.0);
+    if !row_output.0.is_none() {
+        return row_output.0.unwrap();
     }
-    if !_row_output.1.is_none() {
+    if !row_output.1.is_none() {
         let candidate_value = input
-            .get(_row_output.0.unwrap().0 + _row_output.0.unwrap().1 * input.ncols())
+            .get(row_output.0.unwrap().0 + row_output.0.unwrap().1 * input.ncols())
             .unwrap();
-        candidate_copy = (*candidate_value, _row_output.1);
+        candidate_copy = (*candidate_value, row_output.1);
     }
 
     local_min_2d_grid(&input, depth + 1, candidate_copy)
