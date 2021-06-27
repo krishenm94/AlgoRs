@@ -32,9 +32,11 @@ pub fn element_equals_index(input: &Vec<i32>, start: usize, end: usize) -> Optio
     }
 }
 
+// It might be more optimal to include the neighbours checked in candidate selection
+// Thereby speeding up looking for the local min
 // TODO: test
 #[allow(dead_code)]
-pub fn local_min_2d_grid(
+pub fn local_moore_min_2d(
     input: &Matrix2<i32>,
     depth: usize,
     candidate: (i32, Option<(usize, usize)>),
@@ -152,7 +154,7 @@ pub fn local_min_2d_grid(
         candidate_copy = (*candidate_value, row_output.1);
     }
 
-    local_min_2d_grid(&input, depth + 1, candidate_copy)
+    local_moore_min_2d(&input, depth + 1, candidate_copy)
 }
 
 #[cfg(test)]
