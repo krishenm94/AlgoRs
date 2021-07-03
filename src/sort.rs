@@ -376,6 +376,7 @@ where
         + quick_and_return_comparisons(input, partition_index + 1, last, &choose_pivot)
 }
 
+#[allow(dead_code)]
 pub fn choose_pivot_first<T>(_: &Vec<T>, first: usize, _: usize) -> usize
 where
     T: Debug,
@@ -383,6 +384,7 @@ where
     first
 }
 
+#[allow(dead_code)]
 pub fn choose_pivot_last<T>(_: &Vec<T>, _: usize, last: usize) -> usize
 where
     T: Debug,
@@ -390,6 +392,7 @@ where
     last
 }
 
+#[allow(dead_code)]
 pub fn choose_pivot_median3<T>(input: &Vec<T>, first: usize, last: usize) -> usize
 where
     T: Ord + Debug,
