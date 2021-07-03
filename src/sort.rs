@@ -345,11 +345,11 @@ where
 
 // TODO: unit test
 #[allow(dead_code)]
-pub fn quick<T>(
+pub fn quick_and_return_comparisons<T>(
     input: &mut Vec<T>,
     first: usize,
     last: usize,
-    choose_pivot: impl Fn(&Vec<T>, usize, usize) -> usize,
+    choose_pivot: &impl Fn(&Vec<T>, usize, usize) -> usize,
 ) -> usize
 where
     T: Ord + Debug,
@@ -364,16 +364,18 @@ where
     input.swap(first, pivotIndex);
 
     let mut partition_index: usize = first;
-    for i in first+1..last {
-        if input[i] < input[partition_index]{
+    for i in first + 1..last {
+        if input[i] < input[partition_index] {
             input.swap(i, partition_index);
             partition_index = i;
         }
     }
 
-    let operations = partition_index - first;
+    let comparisons = partition_index - first;
 
-    operations + quick(input, first, partition_index - 1, choose_pivot) + quick(input, partition_index + 1, last, choose_pivot)
+    comparisons
+        + quick_and_return_comparisons(input, first, partition_index - 1, &choose_pivot)
+        + quick_and_return_comparisons(input, partition_index + 1, last, &choose_pivot)
 }
 
 pub fn choose_pivot_first<T>(_: &Vec<T>, first: usize, _: usize) -> usize
