@@ -358,10 +358,10 @@ where
         return 0;
     }
 
-    let pivotIndex = choose_pivot(input, first, last);
+    let pivot_index = choose_pivot(input, first, last);
 
     // Make pivot index element first
-    input.swap(first, pivotIndex);
+    input.swap(first, pivot_index);
 
     let mut partition_index: usize = first;
     for i in first + 1..last {
@@ -371,9 +371,7 @@ where
         }
     }
 
-    let comparisons = partition_index - first;
-
-    comparisons
+    last - first
         + quick_and_return_comparisons(input, first, partition_index - 1, &choose_pivot)
         + quick_and_return_comparisons(input, partition_index + 1, last, &choose_pivot)
 }
