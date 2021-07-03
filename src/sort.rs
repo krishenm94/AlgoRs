@@ -343,6 +343,7 @@ where
     ));
 }
 
+// TODO: unit test
 #[allow(dead_code)]
 pub fn quick<T>(
     input: &mut Vec<T>,
