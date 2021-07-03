@@ -344,33 +344,45 @@ where
 }
 
 #[allow(dead_code)]
-pub fn quick_first<T>(input: &mut Vec<T>) -> usize
+pub fn quick<T>(input: &mut Vec<T>, choose_pivot: impl Fn(&Vec<T>, usize, usize) -> usize) -> usize
 where
     T: Ord + Debug,
 {
     // bootstrap
-    // choose partition
+    // choose pivot
     // sort
 }
 
-#[allow(dead_code)]
-pub fn quick_last<T>(input: &mut Vec<T>)
+pub fn choose_pivot_first<T>(_: &Vec<T>, first: usize, _: usize) -> usize
 where
-    T: Ord + Debug,
+    T: Debug,
 {
-    // bootstrap
-    // choose partition
-    // sort
+    first
 }
 
-#[allow(dead_code)]
-pub fn quick_median_first_middle_last<T>(input: &mut Vec<T>)
+pub fn choose_pivot_last<T>(_: &Vec<T>, _: usize, last: usize) -> usize
+where
+    T: Debug,
+{
+    last
+}
+
+pub fn choose_pivot_median3<T>(input: &Vec<T>, first: usize, last: usize) -> usize
 where
     T: Ord + Debug,
 {
-    // bootstrap
-    // choose partition
-    // sort
+    let middle = (first + last) / 2;
+    if (input[first] > input[last] && input[first] < input[middle])
+        || (input[first] > input[middle] && input[first] < input[last])
+    {
+        first
+    } else if (input[last] > input[first] && input[last] < input[middle])
+        || (input[last] > input[middle] && input[last] < input[first])
+    {
+        last
+    } else {
+        middle
+    }
 }
 
 #[cfg(test)]
