@@ -343,6 +343,36 @@ where
     ));
 }
 
+#[allow(dead_code)]
+pub fn quick_first<T>(input: &mut Vec<T>) -> usize
+where
+    T: Ord + Debug,
+{
+    // bootstrap
+    // choose partition
+    // sort
+}
+
+#[allow(dead_code)]
+pub fn quick_last<T>(input: &mut Vec<T>)
+where
+    T: Ord + Debug,
+{
+    // bootstrap
+    // choose partition
+    // sort
+}
+
+#[allow(dead_code)]
+pub fn quick_median_first_middle_last<T>(input: &mut Vec<T>)
+where
+    T: Ord + Debug,
+{
+    // bootstrap
+    // choose partition
+    // sort
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
